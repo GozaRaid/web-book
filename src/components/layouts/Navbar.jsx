@@ -25,13 +25,19 @@ import { Button } from "@/components/ui/button";
 import { useAuth } from "@/features/auth/AuthContext";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useDeleteAuth } from "@/features/auth/UseDeleteAuth";
 
 export function Navbar() {
   const { isLoggedIn, userData, logout } = useAuth();
   const router = useRouter();
 
-  const handleLogout = () => {
-    logout();
+  const deleteAuthMutation = useDeleteAuth();
+
+  const handleLogout = async () => {
+    try {
+      await deleteAuthMutation.mutateAsync();
+      logout();
+    } catch (error) {}
   };
 
   const [query, setQuery] = useState("");

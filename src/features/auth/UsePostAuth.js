@@ -4,7 +4,7 @@ import { useAuth } from "./AuthContext";
 
 export const usePostAuth = () => {
   const { login } = useAuth();
-
+  axiosInstance.defaults.withCredentials = true;
   return useMutation({
     mutationFn: async ({ username, password }) => {
       try {
@@ -14,7 +14,6 @@ export const usePostAuth = () => {
         });
 
         return response.data;
-        1` ~`;
       } catch (error) {
         throw new Error(
           error.response?.data?.message || error.message || "An error occurred"
@@ -27,8 +26,6 @@ export const usePostAuth = () => {
     },
     onSuccess: (data) => {
       login(data.data.accessToken);
-
-      document.cookie = `refreshToken=${data.data.refreshToken}; HttpOnly; Secure; Path=/; SameSite=Strict`;
     },
   });
 };
